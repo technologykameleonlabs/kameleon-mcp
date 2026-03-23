@@ -10,3 +10,4 @@ get-march-hours.ts
 *.rar
 .mcp.json
 .claude/
+.idea/
