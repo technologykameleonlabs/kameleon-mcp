@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+
+# Temp debug files
+parse-march.cjs
+get-march-hours.ts
+
+# Archives
+*.rar
+.mcp.json
+.claude/

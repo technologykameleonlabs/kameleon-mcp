@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "kameleon": {
+      "command": "npx",
+      "args": ["tsx", "./src/index.ts"],
+      "env": {
+        "KAMELEON_BASE_URL": "https://my.kameleonlabs.ai",
+        "KAMELEON_SESSION_TOKEN": "<TU_SESSION_TOKEN>",
+        "KAMELEON_TENANT_SLUG": "<TU_TENANT_SLUG>"
+      }
+    }
+  }
+}
