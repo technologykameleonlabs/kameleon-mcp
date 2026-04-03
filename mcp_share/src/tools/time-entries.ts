@@ -106,4 +106,74 @@ export function registerTimeEntryTools(server: McpServer) {
       return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
     }
   );
+
+  // --- Get by ID ---
+
+  server.tool(
+    "kameleon_time_entries_get",
+    "Get a time entry by ID.",
+    { timeEntryId: uuid },
+    async (input) => {
+      const data = await trpcQuery("timeEntries.getById", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  // --- Approval Flow ---
+
+  server.tool(
+    "kameleon_time_entries_approve",
+    "Approve a submitted time entry.",
+    { timeEntryId: uuid },
+    async (input) => {
+      const data = await trpcMutation("timeEntries.approve", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_time_entries_reject",
+    "Reject a submitted time entry.",
+    { timeEntryId: uuid },
+    async (input) => {
+      const data = await trpcMutation("timeEntries.reject", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_time_entries_resubmit",
+    "Resubmit a rejected time entry.",
+    { timeEntryId: uuid },
+    async (input) => {
+      const data = await trpcMutation("timeEntries.resubmit", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_time_entries_pending_approval",
+    "List time entries pending approval.",
+    { projectId: uuid.optional() },
+    async (input) => {
+      const data = await trpcQuery("timeEntries.pendingApproval", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_time_entries_export",
+    "Export time entries for a project.",
+    {
+      projectId: uuid,
+      userId: uuid.optional(),
+      status: z.array(z.string()).optional(),
+      dateFrom: z.string().optional(),
+      dateTo: z.string().optional(),
+    },
+    async (input) => {
+      const data = await trpcQuery("timeEntries.export", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
 }

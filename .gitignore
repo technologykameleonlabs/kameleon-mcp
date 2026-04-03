@@ -9,5 +9,11 @@ get-march-hours.ts
 # Archives
 *.rar
 .mcp.json
-.claude/
+# Claude Code - excluir config local, permitir skills y CLAUDE.md
+.claude/settings.json
+.claude/settings.local.json
+.claude/debug/
+.claude/sessions/
+.claude/todos/
+.claude/shell-snapshots/
 .idea/

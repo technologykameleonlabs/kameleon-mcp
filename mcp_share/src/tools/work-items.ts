@@ -5,6 +5,8 @@ import { trpcQuery, trpcMutation } from "../trpc-client.js";
 const uuid = z.string().uuid();
 
 export function registerWorkItemTools(server: McpServer) {
+  // --- Work Items CRUD ---
+
   server.tool(
     "kameleon_work_items_create",
     "Create a work item (task/ticket/bug) in a project. Requires projectId and typeId (get types from kameleon_workflows_list_work_item_types).",
@@ -253,6 +255,165 @@ export function registerWorkItemTools(server: McpServer) {
     { projectId: uuid },
     async (input) => {
       const data = await trpcQuery("workItems.getProjectWorkflowConfig", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  // --- Restore ---
+
+  server.tool(
+    "kameleon_work_items_restore",
+    "Restore an archived work item.",
+    { workItemId: uuid },
+    async (input) => {
+      const data = await trpcMutation("workItems.restore", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  // --- Watchers ---
+
+  server.tool(
+    "kameleon_work_items_add_watcher",
+    "Add a user as a watcher on a work item.",
+    { workItemId: uuid, userId: uuid },
+    async (input) => {
+      const data = await trpcMutation("workItems.addWatcher", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_work_items_remove_watcher",
+    "Remove a watcher from a work item.",
+    { workItemId: uuid, userId: uuid },
+    async (input) => {
+      const data = await trpcMutation("workItems.removeWatcher", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_work_items_list_watchers",
+    "List watchers of a work item.",
+    { workItemId: uuid },
+    async (input) => {
+      const data = await trpcQuery("workItems.listWatchers", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_work_items_watch",
+    "Watch a work item (current user).",
+    { workItemId: uuid },
+    async (input) => {
+      const data = await trpcMutation("workItems.watch", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_work_items_unwatch",
+    "Unwatch a work item (current user).",
+    { workItemId: uuid },
+    async (input) => {
+      const data = await trpcMutation("workItems.unwatch", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  // --- Attachments ---
+
+  server.tool(
+    "kameleon_work_items_list_attachments",
+    "List attachments of a work item.",
+    { workItemId: uuid },
+    async (input) => {
+      const data = await trpcQuery("workItems.listAttachments", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_work_items_add_attachment",
+    "Add an attachment record to a work item.",
+    { workItemId: uuid, fileName: z.string(), fileSize: z.number().optional(), mimeType: z.string().optional(), storageKey: z.string() },
+    async (input) => {
+      const data = await trpcMutation("workItems.addAttachment", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_work_items_delete_attachment",
+    "Delete an attachment from a work item.",
+    { attachmentId: uuid },
+    async (input) => {
+      const data = await trpcMutation("workItems.deleteAttachment", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  // --- Work Item Financials ---
+
+  server.tool(
+    "kameleon_work_items_list_financials",
+    "List financial entries for a work item.",
+    { workItemId: uuid },
+    async (input) => {
+      const data = await trpcQuery("workItems.listFinancials", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_work_items_add_financial",
+    "Add a financial entry to a work item.",
+    {
+      projectId: uuid,
+      workItemId: uuid,
+      direction: z.enum(["expense", "revenue"]),
+      bucket: z.enum(["budget", "plan", "committed", "actual"]),
+      amount: z.number(),
+      date: z.string(),
+      description: z.string().optional(),
+      vendorName: z.string().optional(),
+    },
+    async (input) => {
+      const data = await trpcMutation("workItems.addFinancial", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_work_items_delete_financial",
+    "Delete a financial entry from a work item.",
+    { entryId: uuid },
+    async (input) => {
+      const data = await trpcMutation("workItems.deleteFinancial", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_work_items_get_financial_summary",
+    "Get aggregated financial summary for a work item.",
+    { workItemId: uuid },
+    async (input) => {
+      const data = await trpcQuery("workItems.getFinancialSummary", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  // --- Remove Link ---
+
+  server.tool(
+    "kameleon_work_items_remove_link",
+    "Remove a dependency link between work items.",
+    { linkId: uuid },
+    async (input) => {
+      const data = await trpcMutation("workItems.removeLink", input);
       return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
     }
   );

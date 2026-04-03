@@ -5,6 +5,8 @@ import { trpcQuery, trpcMutation } from "../trpc-client.js";
 const uuid = z.string().uuid();
 
 export function registerProjectTools(server: McpServer) {
+  // --- Projects CRUD ---
+
   server.tool(
     "kameleon_projects_list",
     "List projects with optional search, methodology filter, and pagination.",
@@ -89,6 +91,8 @@ export function registerProjectTools(server: McpServer) {
     }
   );
 
+  // --- Members ---
+
   server.tool(
     "kameleon_projects_list_members",
     "List members of a project.",
@@ -118,6 +122,8 @@ export function registerProjectTools(server: McpServer) {
       return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
     }
   );
+
+  // --- Containers (phases, sprints, epics, etc.) ---
 
   server.tool(
     "kameleon_projects_list_containers",
@@ -177,6 +183,88 @@ export function registerProjectTools(server: McpServer) {
     { projectId: uuid },
     async (input) => {
       const data = await trpcQuery("projects.getContainerTree", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  // --- Additional Project Operations ---
+
+  server.tool(
+    "kameleon_projects_restore",
+    "Restore an archived project.",
+    { projectId: uuid },
+    async (input) => {
+      const data = await trpcMutation("projects.restore", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_projects_close_container",
+    "Close a container.",
+    { containerId: uuid },
+    async (input) => {
+      const data = await trpcMutation("projects.closeContainer", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_projects_reorder_containers",
+    "Reorder containers in a project.",
+    { projectId: uuid, containerIds: z.array(uuid) },
+    async (input) => {
+      const data = await trpcMutation("projects.reorderContainers", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_projects_delete_container",
+    "Delete a container.",
+    { containerId: uuid },
+    async (input) => {
+      const data = await trpcMutation("projects.deleteContainer", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_projects_toggle_pin",
+    "Toggle project pin status for the current user.",
+    { projectId: uuid },
+    async (input) => {
+      const data = await trpcMutation("projects.togglePin", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_projects_change_color",
+    "Change a project's display color.",
+    { projectId: uuid, color: z.string() },
+    async (input) => {
+      const data = await trpcMutation("projects.changeColor", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_projects_duplicate",
+    "Duplicate a project (copies settings, not work items).",
+    { projectId: uuid, newName: z.string().min(1).max(255), newCodePrefix: z.string().min(2).max(10) },
+    async (input) => {
+      const data = await trpcMutation("projects.duplicate", input);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "kameleon_projects_get_stats",
+    "Get project statistics (tasks, completion, overdue).",
+    { projectId: uuid },
+    async (input) => {
+      const data = await trpcQuery("projects.getStats", input);
       return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
     }
   );
