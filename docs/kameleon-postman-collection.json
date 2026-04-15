@@ -1,0 +1,3059 @@
+{
+  "info": {
+    "name": "Kameleon Platform API",
+    "description": "Auto-generada desde OpenAPI spec — 2026-04-15",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{sessionToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://my.kameleonlabs.ai",
+      "type": "string"
+    },
+    {
+      "key": "sessionToken",
+      "value": "ab6b5d591d8c6273cc629bf8faeb2ad0be15905e57078dc013fc1b8fcd17a0b1",
+      "type": "string"
+    },
+    {
+      "key": "exampleId",
+      "value": "00000000-0000-0000-0000-000000000000",
+      "type": "string"
+    },
+    {
+      "key": "tenantSlug",
+      "value": "kameleon-labs",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Payment Terms",
+      "item": [
+        {
+          "name": "List payment terms",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/payment-terms?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "payment-terms"
+              ],
+              "query": [
+                {
+                  "key": "isActive",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "includeInactive",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "",
+                  "description": "enum: CASH|NET_30|NET_60|NET_90|CUSTOM",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Returns a paginated list of payment terms for the current tenant.\nSupports filtering by type, active status, and search.\n\n**Errors:**\n- `400` Tenant context required or invalid query parameters\n- `401` Authentication required\n- `403` Insufficient permissions"
+          },
+          "response": []
+        },
+        {
+          "name": "Create payment term",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/payment-terms",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "payment-terms"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string_value\",\n  \"type\": \"CASH\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Creates a new payment term for the current tenant.\nThe code field must be unique per tenant if provided.\n\n**Errors:**\n- `400` Validation: name required, type must be valid enum, dueDays >= 0\n- `401` Authentication required\n- `403` Insufficient permissions\n- `409` Payment term with this code already exists for the tenant"
+          },
+          "response": []
+        },
+        {
+          "name": "Get payment term by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/payment-terms/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "payment-terms",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Returns a single payment term by its UUID, scoped to the current tenant.\n\n**Errors:**\n- `400` Invalid UUID format or tenant context missing\n- `401` Authentication required\n- `403` Insufficient permissions\n- `404` Payment term not found or does not belong to tenant"
+          },
+          "response": []
+        },
+        {
+          "name": "Update payment term",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/payment-terms/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "payment-terms",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string_value\",\n  \"type\": \"CASH\",\n  \"dueDays\": 0,\n  \"dueRule\": {},\n  \"code\": \"string_value\",\n  \"displayOrder\": 1,\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Partially updates an existing payment term. Only provided fields are changed.\n\n**Errors:**\n- `400` Validation: invalid field values\n- `401` Authentication required\n- `403` Insufficient permissions\n- `404` Payment term not found or does not belong to tenant\n- `409` Payment term with this code already exists for the tenant"
+          },
+          "response": []
+        },
+        {
+          "name": "Deactivate payment term",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/payment-terms/:id/deactivate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "payment-terms",
+                ":id",
+                "deactivate"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Soft-deletes a payment term by setting isActive to false.\nThe record is not physically deleted.\nFuture: will validate the term is not in use by invoices.\n\n**Errors:**\n- `400` Invalid UUID format or tenant context missing\n- `401` Authentication required\n- `403` Insufficient permissions\n- `404` Payment term not found or does not belong to tenant"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Taxes",
+      "item": [
+        {
+          "name": "List taxes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/taxes?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "taxes"
+              ],
+              "query": [
+                {
+                  "key": "isActive",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "includeInactive",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "isRetention",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Returns a paginated list of taxes for the current tenant.\nSupports filtering by active status, retention flag, and search."
+          },
+          "response": []
+        },
+        {
+          "name": "Create tax",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/taxes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "taxes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string_value\",\n  \"rate\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Creates a new tax rate for the current tenant."
+          },
+          "response": []
+        },
+        {
+          "name": "Get tax by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/taxes/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "taxes",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Returns a single tax by its UUID, scoped to the current tenant."
+          },
+          "response": []
+        },
+        {
+          "name": "Update tax",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/taxes/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "taxes",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string_value\",\n  \"rate\": 0,\n  \"calculationType\": \"INCLUDED_IN_PRICE\",\n  \"externalCode\": \"string_value\",\n  \"isRetention\": true,\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Partially updates an existing tax. Only provided fields are changed."
+          },
+          "response": []
+        },
+        {
+          "name": "Deactivate tax",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/taxes/:id/deactivate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "taxes",
+                ":id",
+                "deactivate"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Soft-deletes a tax by setting isActive to false."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Billing Clients",
+      "item": [
+        {
+          "name": "List billing clients",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/billing-clients?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "billing-clients"
+              ],
+              "query": [
+                {
+                  "key": "isActive",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "includeInactive",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "includeMetrics",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Returns a paginated list of billing clients for the current tenant.\nIncludes linked contact and default payment term references.\nSupports filtering by active status and text search (legalName, taxId, email).\n\n**Errors:**\n- `400` Missing tenant context\n- `401` Not authenticated"
+          },
+          "response": []
+        },
+        {
+          "name": "Create billing client",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/billing-clients",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "billing-clients"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"legalName\": \"string_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Creates a new billing client for the current tenant.\nOptionally links to an existing Contact and a default PaymentTerm.\n\n**Errors:**\n- `400` Invalid input or referenced FK does not exist\n- `409` Duplicate taxId for this tenant"
+          },
+          "response": []
+        },
+        {
+          "name": "Get billing client by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/billing-clients/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "billing-clients",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Returns a single billing client by UUID, scoped to the current tenant.\n\n**Errors:**\n- `404` Billing client not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Update billing client",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/billing-clients/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "billing-clients",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactId\": \"{{exampleId}}\",\n  \"legalName\": \"string_value\",\n  \"taxId\": \"string_value\",\n  \"address\": \"string_value\",\n  \"email\": \"test@example.com\",\n  \"defaultPaymentTermId\": \"{{exampleId}}\",\n  \"isActive\": true,\n  \"commercialName\": \"string_value\",\n  \"documentType\": \"string_value\",\n  \"vatRegime\": \"string_value\",\n  \"addressLine1\": \"string_value\",\n  \"addressLine2\": \"string_value\",\n  \"city\": \"string_value\",\n  \"province\": \"string_value\",\n  \"postalCode\": \"string_value\",\n  \"country\": \"string_value\",\n  \"contactName\": \"string_value\",\n  \"contactPhone\": \"string_value\",\n  \"preferredCurrency\": \"string_value\",\n  \"invoiceLanguage\": \"string_value\",\n  \"bankAccount\": \"string_value\",\n  \"internalNotes\": \"string_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Partially updates an existing billing client. Only provided fields are changed.\n\n**Errors:**\n- `400` Invalid input or referenced FK does not exist\n- `404` Billing client not found\n- `409` Duplicate taxId for this tenant"
+          },
+          "response": []
+        },
+        {
+          "name": "Get client ficha with financial metrics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/billing-clients/:id/ficha",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "billing-clients",
+                ":id",
+                "ficha"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Returns client details with aggregated metrics: active contracts, total committed, total invoiced, pending collection."
+          },
+          "response": []
+        },
+        {
+          "name": "Get billing client change log",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/billing-clients/:id/change-log?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "billing-clients",
+                ":id",
+                "change-log"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Returns a paginated history of field-level changes for a billing client (US-CLI-003)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get global billing KPIs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/billing-clients/global-kpis",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "billing-clients",
+                "global-kpis"
+              ]
+            },
+            "description": "Returns aggregated KPIs across all billing clients: total billed and pending collection."
+          },
+          "response": []
+        },
+        {
+          "name": "Deactivate billing client",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/billing-clients/:id/deactivate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "billing-clients",
+                ":id",
+                "deactivate"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Soft-deletes a billing client by setting isActive to false.\n\n**Errors:**\n- `404` Billing client not found"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Company Config",
+      "item": [
+        {
+          "name": "Get company configuration",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/company-config",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "company-config"
+              ]
+            },
+            "description": "Returns the company configuration for the current tenant. Returns null if not configured yet."
+          },
+          "response": []
+        },
+        {
+          "name": "Create or update company configuration",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/company-config",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "company-config"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"legalName\": \"string_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Creates or updates the company configuration for the current tenant. Uses upsert semantics — creates if not exists, updates if exists."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "List products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/products?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "isActive",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "includeInactive",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Returns a paginated list of products for the current tenant.\nSupports filtering by active status and search by name."
+          },
+          "response": []
+        },
+        {
+          "name": "Create product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string_value\",\n  \"unitOfMeasure\": \"string_value\",\n  \"unitPrice\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Creates a new product for the current tenant."
+          },
+          "response": []
+        },
+        {
+          "name": "Get product by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/products/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "products",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Returns a single product by its UUID, scoped to the current tenant."
+          },
+          "response": []
+        },
+        {
+          "name": "Update product",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/products/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "products",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string_value\",\n  \"unitOfMeasure\": \"string_value\",\n  \"unitPrice\": 0,\n  \"defaultTaxId\": \"{{exampleId}}\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Partially updates an existing product. Only provided fields are changed."
+          },
+          "response": []
+        },
+        {
+          "name": "Deactivate product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/products/:id/deactivate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "products",
+                ":id",
+                "deactivate"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Soft-deletes a product by setting isActive to false."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Client Prices",
+      "item": [
+        {
+          "name": "List client prices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/client-prices?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "client-prices"
+              ],
+              "query": [
+                {
+                  "key": "billingClientId",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "productId",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Returns a paginated list of client-specific prices for the current tenant.\nSupports filtering by billing client, product, and active status."
+          },
+          "response": []
+        },
+        {
+          "name": "Create client price",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/client-prices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "client-prices"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"billingClientId\": \"{{exampleId}}\",\n  \"productId\": \"{{exampleId}}\",\n  \"customPrice\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Creates a custom price for a client-product pair. Validates that billing client, product, and optional custom tax exist."
+          },
+          "response": []
+        },
+        {
+          "name": "Get client price by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/client-prices/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "client-prices",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Returns a single client price by its UUID, scoped to the current tenant."
+          },
+          "response": []
+        },
+        {
+          "name": "Update client price",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/client-prices/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "client-prices",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customPrice\": 0,\n  \"customTaxId\": \"{{exampleId}}\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Partially updates an existing client price. Only provided fields are changed."
+          },
+          "response": []
+        },
+        {
+          "name": "Get all prices for a client",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/client-prices/by-client/:billingClientId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "client-prices",
+                "by-client",
+                ":billingClientId"
+              ],
+              "variable": [
+                {
+                  "key": "billingClientId",
+                  "value": "{{billingClientId}}",
+                  "description": "Path variable: billingClientId"
+                }
+              ]
+            },
+            "description": "Returns all active custom prices for a specific billing client."
+          },
+          "response": []
+        },
+        {
+          "name": "Deactivate client price",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/masterdata/client-prices/:id/deactivate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "masterdata",
+                "client-prices",
+                ":id",
+                "deactivate"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Soft-deletes a client price by setting isActive to false."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Project Activation",
+      "item": [
+        {
+          "name": "Activate project",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/:projectId/activate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                ":projectId",
+                "activate"
+              ],
+              "variable": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}",
+                  "description": "Path variable: projectId"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"totalAgreed\": 0,\n  \"billingClientId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Activates a project and creates the associated preinvoice quota (budget cap).\nThe preinvoice amount equals the totalAgreed value and serves as a consumable balance\nfor monthly invoices (MF-007/MF-008).\n\nIf the project is already activated, returns the existing activation (idempotent).\nOnly projects in 'pending' or 'active' status can be activated. Projects in 'completed' or 'archived'\nstatus will be rejected.\n\nIf documentType is 'fiscal_invoice', documentSeriesId is required and a fiscal number\nwill be assigned from the series. If 'proforma', no fiscal number is generated.\n\n**Errors:**\n- `404` Project not found\n- `403` Project in terminal status (completed/archived)\n- `400` Invalid billing client, missing document series for fiscal type, totalAgreed <= 0\n- `409` Preinvoice already exists (conflict on retry — returns existing)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get project activation details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/:projectId/activation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                ":projectId",
+                "activation"
+              ],
+              "variable": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}",
+                  "description": "Path variable: projectId"
+                }
+              ]
+            },
+            "description": "Returns the activation record for a project, including preinvoice and calendar reservation details. Returns null if the project has not been activated."
+          },
+          "response": []
+        },
+        {
+          "name": "Get project preinvoice/quota",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/:projectId/preinvoice",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                ":projectId",
+                "preinvoice"
+              ],
+              "variable": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}",
+                  "description": "Path variable: projectId"
+                }
+              ]
+            },
+            "description": "Returns the preinvoice (budget quota) for a project. The pendingBalance shows how much budget remains for monthly invoices. Returns null if no preinvoice exists."
+          },
+          "response": []
+        },
+        {
+          "name": "List project activations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/activations?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                "activations"
+              ],
+              "query": [
+                {
+                  "key": "trigger",
+                  "value": "",
+                  "description": "enum: manual|contract_signed|rule",
+                  "disabled": true
+                },
+                {
+                  "key": "dateFrom",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "dateTo",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lists all project activations for the current tenant with filtering and pagination."
+          },
+          "response": []
+        },
+        {
+          "name": "Resend activation notifications",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/:projectId/activation/resend-notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                ":projectId",
+                "activation",
+                "resend-notifications"
+              ],
+              "variable": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}",
+                  "description": "Path variable: projectId"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target\": \"team\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Resends activation notifications to team and/or client. Useful if the original notification failed or needs to be reissued."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Project Calendar",
+      "item": [
+        {
+          "name": "Get project calendar reservation",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/:projectId/calendar-reservation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                ":projectId",
+                "calendar-reservation"
+              ],
+              "variable": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}",
+                  "description": "Path variable: projectId"
+                }
+              ]
+            },
+            "description": "Returns the calendar reservation for a project, or null if none exists."
+          },
+          "response": []
+        },
+        {
+          "name": "Update calendar reservation",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/:projectId/calendar-reservation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                ":projectId",
+                "calendar-reservation"
+              ],
+              "variable": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}",
+                  "description": "Path variable: projectId"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reservedDate\": \"2025-01-15T09:00:00.000Z\",\n  \"externalEventId\": \"string_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Updates the calendar reservation for a project. Rechecks conflicts if the date changes."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete calendar reservation",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/:projectId/calendar-reservation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                ":projectId",
+                "calendar-reservation"
+              ],
+              "variable": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}",
+                  "description": "Path variable: projectId"
+                }
+              ]
+            },
+            "description": "Deletes the calendar reservation for a project and clears calendar fields in the activation record."
+          },
+          "response": []
+        },
+        {
+          "name": "List calendar reservations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/calendar-reservations?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                "calendar-reservations"
+              ],
+              "query": [
+                {
+                  "key": "dateFrom",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "dateTo",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "hasConflict",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lists all calendar reservations for the current tenant with filtering and pagination."
+          },
+          "response": []
+        },
+        {
+          "name": "Check calendar conflicts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/calendar-reservations/check-conflicts?date=2025-01-15T09:00:00.000Z",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                "calendar-reservations",
+                "check-conflicts"
+              ],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-01-15T09:00:00.000Z",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "excludeProjectId",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Checks if a given date has conflicting calendar reservations for the current tenant."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Role Tariffs",
+      "item": [
+        {
+          "name": "List role tariffs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/role-tariffs?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "role-tariffs"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "",
+                  "description": "enum: SENIOR|LEAD|MIDDLE|MID_LEVEL|JUNIOR",
+                  "disabled": true
+                },
+                {
+                  "key": "currency",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "enum: ACTIVE|INACTIVE|ARCHIVED",
+                  "disabled": true
+                },
+                {
+                  "key": "includeAll",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Returns a paginated list of role tariffs for the current tenant.\nDefaults to ACTIVE tariffs only unless `includeAll` is true.\nSupports filtering by role, currency and status.\n\n**Errors:**\n- `400` Missing tenant context\n- `401` Not authenticated"
+          },
+          "response": []
+        },
+        {
+          "name": "Create role tariff",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/role-tariffs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "role-tariffs"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"SENIOR\",\n  \"ratePerHour\": 0,\n  \"validFrom\": \"2025-01-15T09:00:00.000Z\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Creates a new role tariff for the current tenant.\nIf an ACTIVE tariff already exists for the same role+currency it is automatically\nARCHIVED with a `validUntil` set to the day before the new `validFrom`.\n\nWhen a tariff is archived, any DRAFT invoices whose members reference the\nold role+rate are returned in `affectedDraftInvoices` so the UI can warn the user.\n\n**Errors:**\n- `400` Invalid input\n- `409` Conflict with existing active tariff (unexpected)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get role tariff by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/role-tariffs/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "role-tariffs",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Returns a single role tariff by UUID, scoped to the current tenant.\n\n**Errors:**\n- `404` Role tariff not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Get active tariff for a role and currency",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/role-tariffs/active?role=SENIOR&currency=string_value",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "role-tariffs",
+                "active"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "SENIOR",
+                  "description": "enum: SENIOR|LEAD|MIDDLE|MID_LEVEL|JUNIOR",
+                  "disabled": false
+                },
+                {
+                  "key": "currency",
+                  "value": "string_value",
+                  "description": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "Returns the currently ACTIVE tariff for a given role+currency combination.\nReturns null if no active tariff exists.\n\n**Errors:**\n- `400` Missing tenant context\n- `401` Not authenticated"
+          },
+          "response": []
+        },
+        {
+          "name": "Deactivate role tariff",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/role-tariffs/:id/deactivate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "role-tariffs",
+                ":id",
+                "deactivate"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"string_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Sets the tariff status to INACTIVE.\nOptionally records the deactivation reason.\n\n**Errors:**\n- `404` Role tariff not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Reactivate role tariff",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/role-tariffs/:id/reactivate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "role-tariffs",
+                ":id",
+                "reactivate"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Sets the tariff status back to ACTIVE.\nFails if another ACTIVE tariff already exists for the same role+currency.\n\n**Errors:**\n- `404` Role tariff not found\n- `409` Another active tariff already exists for this role+currency"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Contracts",
+      "item": [
+        {
+          "name": "List contracts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/contracts?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "contracts"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "enum: DRAFT|IN_REVIEW|APPROVED|ACTIVE|COMPLETED|RESCINDED",
+                  "disabled": true
+                },
+                {
+                  "key": "billingClientId",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "projectId",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Returns a paginated list of contracts for the current tenant.\nSupports filtering by status, billingClientId, projectId, and full-text search.\n\n**Errors:**\n- `400` Missing tenant context\n- `401` Not authenticated"
+          },
+          "response": []
+        },
+        {
+          "name": "Create contract",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/contracts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "contracts"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"billingClientId\": \"{{exampleId}}\",\n  \"projectId\": \"{{exampleId}}\",\n  \"title\": \"string_value\",\n  \"amount\": 0,\n  \"signDate\": \"2025-01-15T09:00:00.000Z\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Creates a new contract for the current tenant.\nAutomatically generates a sequential reference (e.g. CTR/2026/001).\nOptionally attaches billing policies at creation time.\n\n**Errors:**\n- `400` Invalid input\n- `409` Reference conflict (rare race condition)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get contract by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/contracts/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "contracts",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Returns a single contract by UUID, scoped to the current tenant.\nIncludes policies, status logs, invoices, and execution metrics.\n\n**Errors:**\n- `404` Contract not found\n- `401` Not authenticated"
+          },
+          "response": []
+        },
+        {
+          "name": "Update contract",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/contracts/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "contracts",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"string_value\",\n  \"contractType\": \"string_value\",\n  \"amount\": 0,\n  \"currency\": \"string_value\",\n  \"vatRate\": 0,\n  \"signDate\": \"2025-01-15T09:00:00.000Z\",\n  \"startDate\": \"2025-01-15T09:00:00.000Z\",\n  \"endDate\": \"2025-01-15T09:00:00.000Z\",\n  \"scope\": \"string_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Updates mutable fields of a contract. Only works on contracts in DRAFT status.\nRecalculates totalWithVat automatically when amount or vatRate changes.\n\n**Errors:**\n- `403` Contract is not in DRAFT status\n- `404` Contract not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Transition contract status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/contracts/:id/transition",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "contracts",
+                ":id",
+                "transition"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newStatus\": \"DRAFT\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Advances or rolls back the contract through its FSM lifecycle.\n\nValid transitions:\n- DRAFT → IN_REVIEW\n- IN_REVIEW → APPROVED | DRAFT (reason required for rollback)\n- APPROVED → ACTIVE | RESCINDED (reason required for RESCINDED)\n- ACTIVE → COMPLETED | RESCINDED (reason required for RESCINDED)\n\nRescinding a contract automatically cancels all DRAFT invoices.\n\n**Errors:**\n- `400` Invalid transition or missing reason\n- `404` Contract not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Get contract KPI metrics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/contracts/metrics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "contracts",
+                "metrics"
+              ]
+            },
+            "description": ""
+          },
+          "response": []
+        },
+        {
+          "name": "Add member to contract",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/contracts/:contractId/members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "contracts",
+                ":contractId",
+                "members"
+              ],
+              "variable": [
+                {
+                  "key": "contractId",
+                  "value": "{{contractId}}",
+                  "description": "Path variable: contractId"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{exampleId}}\",\n  \"memberName\": \"string_value\",\n  \"tariffRole\": \"SENIOR\",\n  \"ratePerHour\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": ""
+          },
+          "response": []
+        },
+        {
+          "name": "List contract members",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/contracts/:contractId/members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "contracts",
+                ":contractId",
+                "members"
+              ],
+              "variable": [
+                {
+                  "key": "contractId",
+                  "value": "{{contractId}}",
+                  "description": "Path variable: contractId"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "response": []
+        },
+        {
+          "name": "Remove member from contract",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/contracts/:contractId/members/:memberId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "contracts",
+                ":contractId",
+                "members",
+                ":memberId"
+              ],
+              "variable": [
+                {
+                  "key": "contractId",
+                  "value": "{{contractId}}",
+                  "description": "Path variable: contractId"
+                },
+                {
+                  "key": "memberId",
+                  "value": "{{memberId}}",
+                  "description": "Path variable: memberId"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "response": []
+        },
+        {
+          "name": "Get contract execution metrics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/contracts/:id/execution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "contracts",
+                ":id",
+                "execution"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Returns billing execution metrics for a contract:\n- `totalContract`: total contract value including VAT\n- `billed`: amount already invoiced\n- `available`: remaining amount available to invoice\n- `progressPercent`: percentage of contract billed (0–100)\n\n**Errors:**\n- `404` Contract not found"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Invoices V2",
+      "item": [
+        {
+          "name": "List invoices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/invoices?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "invoices"
+              ],
+              "query": [
+                {
+                  "key": "documentStatus",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "paymentStatus",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "contractId",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "billingClientId",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "dateFrom",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "dateTo",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Returns a paginated list of invoices for the current tenant.\nSupports filtering by documentStatus, paymentStatus, contractId,\nbillingClientId, search text, and date range.\n\n**Errors:**\n- `400` Missing tenant context\n- `401` Not authenticated"
+          },
+          "response": []
+        },
+        {
+          "name": "Create invoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/invoices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "invoices"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contractId\": \"{{exampleId}}\",\n  \"period\": \"string_value\",\n  \"issueDate\": \"2025-01-15T09:00:00.000Z\",\n  \"paymentTermId\": \"{{exampleId}}\",\n  \"members\": [\n    {\n      \"memberName\": \"string_value\",\n      \"role\": \"SENIOR\",\n      \"hours\": 0,\n      \"ratePerHour\": 0\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Creates a new DRAFT invoice from a contract member breakdown.\nCalculates gross/discount/net per member, totals, VAT, and due dates\nbased on the selected payment term.\n\n**Errors:**\n- `400` Invalid input or contract not invoiceable\n- `404` Contract or payment term not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Get invoice by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/invoices/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "invoices",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Returns a single invoice with full detail: members, contract, due dates.\n\n**Errors:**\n- `404` Invoice not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Update invoice",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/invoices/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "invoices",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"period\": \"string_value\",\n  \"issueDate\": \"2025-01-15T09:00:00.000Z\",\n  \"paymentTermId\": \"{{exampleId}}\",\n  \"exportDescription\": \"string_value\",\n  \"notes\": \"string_value\",\n  \"members\": [\n    {\n      \"memberName\": \"string_value\",\n      \"role\": \"SENIOR\",\n      \"hours\": 0,\n      \"ratePerHour\": 0\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Updates a DRAFT invoice. Members are fully replaced when provided.\nRecalculates all totals and due dates when members or payment term change.\n\n**Errors:**\n- `400` Invoice is not in DRAFT status\n- `404` Invoice not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Publish invoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/invoices/:id/publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "invoices",
+                ":id",
+                "publish"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Atomically transitions a DRAFT invoice to PUBLISHED.\nReserves fiscal number from active document series, validates contract balance,\nand updates the contract billed amount.\n\n**Errors:**\n- `400` Invoice not in DRAFT / contract not invoiceable / balance exceeded / no active series\n- `404` Invoice not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel invoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/invoices/:id/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "invoices",
+                ":id",
+                "cancel"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"string_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Cancels an invoice (DRAFT or PUBLISHED/SENT/OVERDUE).\nIf the invoice had a fiscal number, reverses the contract billed amount.\nCannot cancel a fully PAID invoice.\n\n**Errors:**\n- `400` Invoice already cancelled or fully paid\n- `404` Invoice not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Mark invoice as sent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/invoices/:id/mark-sent",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "invoices",
+                ":id",
+                "mark-sent"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Transitions a PUBLISHED invoice to SENT, recording the sent timestamp.\n\n**Errors:**\n- `400` Invoice is not in PUBLISHED status\n- `404` Invoice not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Register payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/invoices/:id/payment",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "invoices",
+                ":id",
+                "payment"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 0,\n  \"paymentDate\": \"2025-01-15\",\n  \"paymentMethod\": \"bank_transfer\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Applies a payment amount to the invoice due dates in chronological order.\nUpdates paymentStatus to PARTIALLY_PAID or PAID accordingly.\n\n**Errors:**\n- `400` Invalid document/payment status or non-positive amount\n- `404` Invoice not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Export invoice as PDF",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/invoices/:id/pdf",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "invoices",
+                ":id",
+                "pdf"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "description": "Generates and returns the invoice PDF as a base64-encoded string.\nOnly available for PUBLISHED or later status (not DRAFT).\nThe PDF shows a simplified external view with one consolidated line.\n\n**Errors:**\n- `400` Invoice is still in DRAFT status\n- `404` Invoice not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Send invoice by email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/invoices/:id/send-email",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "invoices",
+                ":id",
+                "send-email"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "{{id}}",
+                  "description": "Path variable: id"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipientEmail\": \"test@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Generates the invoice PDF and sends it by email to the specified recipient.\nIf no recipient is provided, uses the billing client contact email.\nAfter sending, marks the invoice as SENT.\n\n**Errors:**\n- `400` Invoice is DRAFT or no recipient email available\n- `404` Invoice not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Get project members for invoice pre-population",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/invoices/project-members?projectId={{exampleId}}&period=string_value",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "invoices",
+                "project-members"
+              ],
+              "query": [
+                {
+                  "key": "projectId",
+                  "value": "{{exampleId}}",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "period",
+                  "value": "string_value",
+                  "description": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "Returns project members with their billable hours for a given period\nand the active tariff rate for their role. Used to pre-populate invoice lines.\n\n**Errors:**\n- `400` Invalid period format (must be YYYY-MM)\n- `404` Project not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Invoice dashboard KPIs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/invoices/metrics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "invoices",
+                "metrics"
+              ]
+            },
+            "description": "Returns dashboard KPI metrics for the invoicing module:\n- activeThisMonth: invoices issued in the current calendar month\n- pendingCollection: total amount pending in PUBLISHED/SENT/OVERDUE invoices\n- collectedThisMonth: total amount collected (PAID) in the current month\n- overdueCount: number of invoices in OVERDUE status\n\n**Errors:**\n- `400` Missing tenant context\n- `401` Not authenticated"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Finance",
+      "item": [
+        {
+          "name": "Finance dashboard KPIs (YTD)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/finance/kpis",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "finance",
+                "kpis"
+              ]
+            },
+            "description": "Returns year-to-date financial KPIs for the finance dashboard:\n- invoiced: total amount of published/sent/overdue invoices YTD\n- collected: total amount of paid invoices YTD\n- pending: invoiced minus collected\n- openInvoices: total amount of unpaid/partially paid invoices\n- openCount: number of open invoices\n\n**Errors:**\n- `400` Missing tenant context\n- `401` Not authenticated"
+          },
+          "response": []
+        },
+        {
+          "name": "Billed vs collected chart data by month",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/finance/chart?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "finance",
+                "chart"
+              ],
+              "query": [
+                {
+                  "key": "months",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Returns monthly aggregated billing and collection data for the bar chart.\nUses issueDate for billed amounts and updatedAt as proxy for collection date.\n\n**Errors:**\n- `400` Missing tenant context or invalid months parameter\n- `401` Not authenticated"
+          },
+          "response": []
+        },
+        {
+          "name": "Items requiring immediate attention",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/finance/attention",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "finance",
+                "attention"
+              ]
+            },
+            "description": "Returns items needing attention, grouped by type:\n- overdue (red): invoices past due date with outstanding balance\n- review (orange): draft invoices pending review\n- advance (brand): invoices with early payment discounts pending\n\n**Errors:**\n- `400` Missing tenant context\n- `401` Not authenticated"
+          },
+          "response": []
+        },
+        {
+          "name": "Pending balances with aging buckets",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/finance/pending-balances?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "finance",
+                "pending-balances"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "enum: all|invoiced|toCollect",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Returns pending invoices with outstanding amounts classified by aging:\n- over30: outstanding amount overdue > 30 days\n- over60: outstanding amount overdue > 60 days\n- over90: outstanding amount overdue > 90 days\n\nFilterable by status (invoiced, toCollect, all) and search text.\n\n**Errors:**\n- `400` Missing tenant context\n- `401` Not authenticated"
+          },
+          "response": []
+        },
+        {
+          "name": "Financial summary grouped by billing client",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/finance/client-summary?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "finance",
+                "client-summary"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Returns aggregated financial metrics per billing client:\n- invoiced: total invoiced amount (non-draft, non-cancelled)\n- collected: total paid amount\n- pending: invoiced minus collected (null if zero)\n- pctCollected: collection percentage\n- paidInvoices: \"paid/total\" ratio string\n\nSorted by invoiced descending. Searchable by client name.\n\n**Errors:**\n- `400` Missing tenant context\n- `401` Not authenticated"
+          },
+          "response": []
+        },
+        {
+          "name": "Financial summary grouped by project",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing-module/finance/project-summary?",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "billing-module",
+                "finance",
+                "project-summary"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Returns aggregated financial metrics per project (via contracts):\n- budget: SUM of contract totalWithVat (null if zero)\n- invoiced: total invoiced amount (null if zero)\n- paidInvoices: \"paid/total\" ratio string\n\nMultiple contracts per project are merged. Sorted by invoiced descending.\nSearchable by project name or contract title.\n\n**Errors:**\n- `400` Missing tenant context\n- `401` Not authenticated"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
