@@ -1,44 +1,29 @@
 # Kameleon MCP Server
 
-MCP Server para conectar **Claude Code** con la plataforma **Kameleon**. Permite gestionar proyectos, tareas, tiempo, finanzas, contactos y más directamente desde tu terminal con Claude.
+MCP Server que conecta **Claude Code** con la plataforma **Kameleon**. Permite gestionar proyectos, tareas, tiempo, finanzas, contactos y más directamente desde tu asistente de IA.
 
-**152 tools** en 13 dominios.
+**152 tools** · 13 dominios · publicado en [npm](https://www.npmjs.com/package/kameleon-mcp)
 
 ---
 
 ## Requisitos
 
 - **Node.js** 18 o superior → https://nodejs.org
-- **Claude Code** instalado → https://claude.ai/code
+- **Claude Code** → https://claude.ai/code
 - Una cuenta en **Kameleon Platform** → https://my.kameleonlabs.ai
 
 ---
 
 ## Instalación
 
-### 1. Clonar el repositorio
-
-```bash
-git clone https://github.com/leokameleon/KameleonAppMCP.git kameleon-mcp
-cd kameleon-mcp
-```
-
-### 2. Instalar dependencias
-
-```bash
-npm install
-```
-
-### 3. Configurar credenciales
-
-Crear el archivo `.mcp.json` en la raíz del proyecto:
+No hay nada que clonar ni instalar. Solo creá el archivo `.mcp.json` en tu proyecto con la siguiente configuración:
 
 ```json
 {
   "mcpServers": {
     "kameleon": {
       "command": "npx",
-      "args": ["tsx", "./src/index.ts"],
+      "args": ["-y", "kameleon-mcp"],
       "env": {
         "KAMELEON_BASE_URL": "https://my.kameleonlabs.ai",
         "KAMELEON_SESSION_TOKEN": "<TU_SESSION_TOKEN>",
@@ -49,34 +34,36 @@ Crear el archivo `.mcp.json` en la raíz del proyecto:
 }
 ```
 
-| Variable | Cómo obtenerla |
-|---|---|
-| `KAMELEON_SESSION_TOKEN` | Opción A: DevTools (F12) → Application → Cookies → `kameleon-session` · Opción B: dejarlo vacío y usar `kameleon_login` desde Claude |
-| `KAMELEON_TENANT_SLUG` | El subdominio de tu organización. Si tu URL es `empresa.kameleonlabs.ai`, el slug es `empresa` |
+Abrí Claude Code — el servidor se descarga y conecta automáticamente.
 
-### 4. Iniciar Claude Code
+---
 
-```bash
-claude
-```
+## Variables de entorno
 
-Claude Code detectará automáticamente el `.mcp.json` y cargará el servidor.
+| Variable | Descripción | Cómo obtenerla |
+|---|---|---|
+| `KAMELEON_BASE_URL` | URL base de la API | `https://my.kameleonlabs.ai` |
+| `KAMELEON_SESSION_TOKEN` | Token de sesión | DevTools (F12) → Application → Cookies → `kameleon-session`, o dejalo vacío y usá `kameleon_login` desde Claude |
+| `KAMELEON_TENANT_SLUG` | Slug de tu organización | El subdominio de tu cuenta. Si tu URL es `empresa.kameleonlabs.ai`, el slug es `empresa` |
 
-### 5. Verificar
+---
 
-Escribí en Claude:
+## Verificar la instalación
+
+Una vez abierto Claude Code, escribí:
+
 ```
 verifica mi sesión de kameleon
 ```
 
-Debería responder con tu nombre y email. ¡Listo!
+Debería responder con tu nombre y email.
 
 ---
 
 ## Ejemplos de uso
 
 ```
-lista mis proyectos de kameleon
+lista mis proyectos
 qué tareas tengo asignadas?
 crea una tarea "Implementar login" en el proyecto Nemesis de tipo Task
 registra 2 horas de trabajo hoy en la tarea NEM-42
@@ -104,16 +91,18 @@ dame el resumen financiero del proyecto Sourtrack
 | Profile | 3 |
 | User Groups | 7 |
 
-Ver la lista completa en [mcp_share/README.md](mcp_share/README.md).
+---
+
+## Actualización
+
+Las actualizaciones son automáticas — `npx` siempre descarga la última versión publicada. No necesitás hacer nada.
 
 ---
 
 ## Troubleshooting
 
-**El MCP no se conecta:** Verificá que corriste `npm install` y que el archivo `.mcp.json` existe en la raíz.
+**Las tools no aparecen:** Reiniciá Claude Code después de crear o editar el `.mcp.json`.
 
 **Error "Unauthorized":** Tu token expiró. Sacá uno nuevo desde el browser o usá `kameleon_login` desde Claude.
 
-**Error "Tenant not found":** Verificá que `KAMELEON_TENANT_SLUG` sea correcto (el subdominio de tu organización).
-
-**Las tools no aparecen:** Reiniciá Claude Code después de crear/editar el `.mcp.json`.
+**Error "Tenant not found":** Verificá que `KAMELEON_TENANT_SLUG` sea correcto.

@@ -1,0 +1,12 @@
+src/
+docs/
+mcp_share/
+mcp_share.rar
+scripts/
+API.md
+API.html
+CLAUDE.md
+tsconfig.json
+*.ts
+.claude/
+.mcp.json
