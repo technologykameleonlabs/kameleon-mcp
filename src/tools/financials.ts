@@ -2,7 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { trpcQuery, trpcMutation } from "../trpc-client.js";
 
-const uuid = z.string().uuid();
+const uuid = z.string().regex(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/i, "Invalid UUID format");
 
 export function registerFinancialTools(server: McpServer) {
   // --- Financial Entries ---
