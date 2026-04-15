@@ -1,0 +1,4828 @@
+{
+  "info": {
+    "name": "Kameleon — tRPC Endpoints (MCP)",
+    "description": "Todos los procedures tRPC usados por el MCP.\n\nGET = trpcQuery, input como ?input=JSON\nPOST = trpcMutation, body JSON directo (sin wrapper batch)\n\nX-Tenant-Slug se inyecta via pre-request script.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{sessionToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.request.headers.upsert({ key: \"X-Tenant-Slug\", value: pm.collectionVariables.get(\"tenantSlug\") });"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://my.kameleonlabs.ai"
+    },
+    {
+      "key": "sessionToken",
+      "value": "ab6b5d591d8c6273cc629bf8faeb2ad0be15905e57078dc013fc1b8fcd17a0b1"
+    },
+    {
+      "key": "tenantSlug",
+      "value": "kameleon-labs"
+    },
+    {
+      "key": "exampleId",
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "key": "projectSourtrack",
+      "value": "ed4f8eeb-96e3-467a-af8f-104763b91b4c"
+    },
+    {
+      "key": "projectNemesis",
+      "value": "2458e35c-e095-40ac-98ce-7212ab6601d9"
+    },
+    {
+      "key": "projectTibaVision",
+      "value": "e22212de-4cd3-4c59-a7aa-f37241b63da0"
+    },
+    {
+      "key": "userId",
+      "value": "65476446-d64d-4e6c-a36e-f0a6b8ef5968"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "kameleon_login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/auth.login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "auth.login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@kameleonlabs.ai\",\n  \"password\": \"Password123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Authenticate with email/password. Returns session token (also sets it for subsequent calls). If MFA is enabled returns a challenge instead."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_get_current_user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/auth.getCurrentUser",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "auth.getCurrentUser"
+              ]
+            },
+            "description": "Get the current authenticated user with memberships and tenant info."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_check_session",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/auth.checkSession",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "auth.checkSession"
+              ]
+            },
+            "description": "Check if the current session is valid."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Workflows",
+      "item": [
+        {
+          "name": "kameleon_workflows_list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.list?input=%7B%22includeSystem%22%3Atrue%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.list"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"includeSystem\":true}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List all workflows for the tenant."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_get",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.getById?input=%7B%22id%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.getById"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"id\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get a workflow with its states and transitions."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_list_work_item_types",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.listWorkItemTypes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.listWorkItemTypes"
+              ]
+            },
+            "description": "List work item types available in the tenant. Use this to get the typeId needed when creating work items."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_list_methodologies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.listMethodologies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.listMethodologies"
+              ]
+            },
+            "description": "List methodologies available in the tenant."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.create"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test value\",\n  \"description\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create a workflow."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.update",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.update"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{exampleId}}\",\n  \"name\": \"Test value\",\n  \"description\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a workflow."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_delete",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.delete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.delete"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete a workflow."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_duplicate",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.duplicate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.duplicate"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workflowId\": \"{{exampleId}}\",\n  \"newName\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Duplicate a workflow (copies states and transitions)."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_add_state",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.addState",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.addState"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workflowId\": \"{{exampleId}}\",\n  \"name\": \"Test value\",\n  \"category\": \"example_value\",\n  \"orderIndex\": 1,\n  \"isInitial\": true,\n  \"isTerminal\": true,\n  \"color\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Add a state to a workflow."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_update_state",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.updateState",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.updateState"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stateId\": \"{{exampleId}}\",\n  \"name\": \"Test value\",\n  \"category\": \"example_value\",\n  \"orderIndex\": 1,\n  \"isInitial\": true,\n  \"isTerminal\": true,\n  \"color\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a workflow state."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_delete_state",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.deleteState",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.deleteState"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stateId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete a workflow state."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_reorder_states",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.reorderStates",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.reorderStates"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workflowId\": \"{{exampleId}}\",\n  \"stateIds\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Reorder workflow states."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_add_transition",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.addTransition",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.addTransition"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workflowId\": \"{{exampleId}}\",\n  \"fromStateId\": \"{{exampleId}}\",\n  \"toStateId\": \"{{exampleId}}\",\n  \"name\": \"Test value\",\n  \"permissionKey\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Add a transition between workflow states."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_delete_transition",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.deleteTransition",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.deleteTransition"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transitionId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete a workflow transition."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_generate_all_transitions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.generateAllTransitions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.generateAllTransitions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workflowId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Auto-generate transitions between all states in a workflow."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_create_work_item_type",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.createWorkItemType",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.createWorkItemType"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test value\",\n  \"icon\": \"example_value\",\n  \"color\": \"example_value\",\n  \"workflowId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create a work item type."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_get_methodology",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.getMethodology?input=%7B%22id%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.getMethodology"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"id\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get a methodology by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_workflows_duplicate_methodology",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workflows.duplicateMethodology",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workflows.duplicateMethodology"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"methodologyId\": \"{{exampleId}}\",\n  \"newName\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Duplicate a methodology for customization."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Work Items",
+      "item": [
+        {
+          "name": "kameleon_work_items_create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.create"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\",\n  \"typeId\": \"{{exampleId}}\",\n  \"stateId\": \"{{exampleId}}\",\n  \"containerId\": \"{{exampleId}}\",\n  \"parentId\": \"{{exampleId}}\",\n  \"title\": \"Test value\",\n  \"description\": \"example_value\",\n  \"priority\": 1,\n  \"severity\": 1,\n  \"assigneeId\": \"{{exampleId}}\",\n  \"reporterId\": \"{{exampleId}}\",\n  \"estimateMinutes\": 1,\n  \"dueDate\": \"2025-01-15\",\n  \"startPlan\": \"example_value\",\n  \"endPlan\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create a work item (task/ticket/bug) in a project. Requires projectId and typeId (get types from kameleon_workflows_list_work_item_types)."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.list?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22containerId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22typeId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22stateId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22assigneeId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22search%22%3A%22example_value%22%2C%22includeArchived%22%3Atrue%2C%22limit%22%3A1%2C%22offset%22%3A1%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.list"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\",\"containerId\":\"{{exampleId}}\",\"typeId\":\"{{exampleId}}\",\"stateId\":\"{{exampleId}}\",\"assigneeId\":\"{{exampleId}}\",\"search\":\"example_value\",\"includeArchived\":true,\"limit\":1,\"offset\":1}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List work items in a project with optional filters."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_get",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.getById?input=%7B%22workItemId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.getById"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"workItemId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get a work item by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_get_by_key",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.getByKey?input=%7B%22key%22%3A%22NEM-1%22%2C%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.getByKey"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"key\":\"NEM-1\",\"projectId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get a work item by its key (e.g. 'PROJ-123')."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_my_assigned",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.myAssignedItems?input=%7B%22limit%22%3A1%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.myAssignedItems"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"limit\":1}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get work items assigned to the current user across all projects."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.update",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.update"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workItemId\": \"{{exampleId}}\",\n  \"title\": \"Test value\",\n  \"description\": \"example_value\",\n  \"typeId\": \"{{exampleId}}\",\n  \"stateId\": \"{{exampleId}}\",\n  \"priority\": 1,\n  \"severity\": 1,\n  \"containerId\": \"{{exampleId}}\",\n  \"assigneeId\": \"{{exampleId}}\",\n  \"estimateMinutes\": 1,\n  \"dueDate\": \"2025-01-15\",\n  \"startPlan\": \"example_value\",\n  \"endPlan\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_transition",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.transition",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.transition"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workItemId\": \"{{exampleId}}\",\n  \"toStateId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Transition a work item to a new workflow state."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_delete",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.delete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.delete"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workItemId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Permanently delete a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_archive",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.archive",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.archive"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workItemId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Archive a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_search",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.searchWorkItems?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22search%22%3A%22example_value%22%2C%22excludeIds%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.searchWorkItems"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\",\"search\":\"example_value\",\"excludeIds\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Search work items by title/key in a project (max 10 results)."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_add_task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.addTask",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.addTask"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workItemId\": \"{{exampleId}}\",\n  \"title\": \"Test value\",\n  \"assigneeId\": \"{{exampleId}}\",\n  \"dueDate\": \"2025-01-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Add a subtask to a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_toggle_task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.toggleTask",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.toggleTask"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"taskId\": \"{{exampleId}}\",\n  \"isDone\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Toggle a subtask completion."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_list_tasks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.listTasks?input=%7B%22workItemId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.listTasks"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"workItemId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List subtasks for a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_remove_task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.removeTask",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.removeTask"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"taskId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Remove a subtask."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_list_comments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.listComments?input=%7B%22workItemId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.listComments"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"workItemId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List comments on a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_add_comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.addComment",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.addComment"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workItemId\": \"{{exampleId}}\",\n  \"content\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Add a comment to a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_delete_comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.deleteComment",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.deleteComment"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"commentId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete a comment."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_add_link",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.addLink",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.addLink"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fromWorkItemId\": \"{{exampleId}}\",\n  \"toWorkItemId\": \"{{exampleId}}\",\n  \"linkType\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create a dependency link between two work items."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_list_links",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.listLinks?input=%7B%22workItemId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.listLinks"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"workItemId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List links for a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_get_workflow_config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.getProjectWorkflowConfig?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.getProjectWorkflowConfig"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get workflow config (types, states, transitions) for a project. Essential for knowing which typeId/stateId to use when creating work items."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_restore",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.restore",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.restore"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workItemId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Restore an archived work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_add_watcher",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.addWatcher",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.addWatcher"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workItemId\": \"{{exampleId}}\",\n  \"userId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Add a user as a watcher on a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_remove_watcher",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.removeWatcher",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.removeWatcher"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workItemId\": \"{{exampleId}}\",\n  \"userId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Remove a watcher from a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_list_watchers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.listWatchers?input=%7B%22workItemId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.listWatchers"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"workItemId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List watchers of a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_watch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.watch",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.watch"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workItemId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Watch a work item (current user)."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_unwatch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.unwatch",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.unwatch"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workItemId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Unwatch a work item (current user)."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_list_attachments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.listAttachments?input=%7B%22workItemId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.listAttachments"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"workItemId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List attachments of a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_add_attachment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.addAttachment",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.addAttachment"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workItemId\": \"{{exampleId}}\",\n  \"fileName\": \"example_value\",\n  \"fileSize\": 1,\n  \"mimeType\": \"example_value\",\n  \"storageKey\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Add an attachment record to a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_delete_attachment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.deleteAttachment",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.deleteAttachment"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attachmentId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete an attachment from a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_list_financials",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.listFinancials?input=%7B%22workItemId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.listFinancials"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"workItemId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List financial entries for a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_add_financial",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.addFinancial",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.addFinancial"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\",\n  \"workItemId\": \"{{exampleId}}\",\n  \"direction\": \"example_value\",\n  \"bucket\": \"example_value\",\n  \"amount\": 1,\n  \"date\": \"2025-01-15\",\n  \"description\": \"example_value\",\n  \"vendorName\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Add a financial entry to a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_delete_financial",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.deleteFinancial",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.deleteFinancial"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entryId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete a financial entry from a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_get_financial_summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.getFinancialSummary?input=%7B%22workItemId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.getFinancialSummary"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"workItemId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get aggregated financial summary for a work item."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_work_items_remove_link",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/workItems.removeLink",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "workItems.removeLink"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"linkId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Remove a dependency link between work items."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "kameleon_projects_list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.list?input=%7B%22search%22%3A%22example_value%22%2C%22methodologyId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22includeArchived%22%3Atrue%2C%22limit%22%3A1%2C%22offset%22%3A1%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.list"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"search\":\"example_value\",\"methodologyId\":\"{{exampleId}}\",\"includeArchived\":true,\"limit\":1,\"offset\":1}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List projects with optional search, methodology filter, and pagination."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_get",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.getById?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.getById"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get a project by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.create"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test value\",\n  \"description\": \"example_value\",\n  \"codePrefix\": \"example_value\",\n  \"methodologyId\": \"{{exampleId}}\",\n  \"currency\": \"example_value\",\n  \"timezone\": \"example_value\",\n  \"startDate\": \"2025-01-15\",\n  \"endDate\": \"2025-01-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create a new project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.update",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.update"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\",\n  \"name\": \"Test value\",\n  \"description\": \"example_value\",\n  \"methodologyId\": \"{{exampleId}}\",\n  \"currency\": \"example_value\",\n  \"timezone\": \"example_value\",\n  \"startDate\": \"2025-01-15\",\n  \"endDate\": \"2025-01-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update project details."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_archive",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.archive",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.archive"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Archive a project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_delete",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.delete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.delete"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Permanently delete a project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_list_members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.listMembers?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.listMembers"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List members of a project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_add_member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.addMember",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.addMember"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\",\n  \"userId\": \"{{exampleId}}\",\n  \"roleId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Add a member to a project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_remove_member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.removeMember",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.removeMember"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\",\n  \"userId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Remove a member from a project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_list_containers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.listContainers?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22containerType%22%3A%22example_value%22%2C%22parentId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22isClosed%22%3Atrue%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.listContainers"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\",\"containerType\":\"example_value\",\"parentId\":\"{{exampleId}}\",\"isClosed\":true}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List containers (phases, sprints, epics, milestones) in a project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_create_container",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.createContainer",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.createContainer"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\",\n  \"parentId\": \"{{exampleId}}\",\n  \"containerType\": \"example_value\",\n  \"name\": \"Test value\",\n  \"description\": \"example_value\",\n  \"startPlan\": \"example_value\",\n  \"endPlan\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create a container (phase, sprint, epic, milestone, etc.) in a project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_update_container",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.updateContainer",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.updateContainer"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"containerId\": \"{{exampleId}}\",\n  \"name\": \"Test value\",\n  \"description\": \"example_value\",\n  \"isClosed\": true,\n  \"startPlan\": \"example_value\",\n  \"endPlan\": \"example_value\",\n  \"startActual\": \"example_value\",\n  \"endActual\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a container."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_get_container_tree",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.getContainerTree?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.getContainerTree"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get the hierarchical container tree of a project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_restore",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.restore",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.restore"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Restore an archived project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_close_container",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.closeContainer",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.closeContainer"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"containerId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Close a container."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_reorder_containers",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.reorderContainers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.reorderContainers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\",\n  \"containerIds\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Reorder containers in a project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_delete_container",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.deleteContainer",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.deleteContainer"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"containerId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete a container."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_toggle_pin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.togglePin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.togglePin"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Toggle project pin status for the current user."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_change_color",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.changeColor",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.changeColor"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\",\n  \"color\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Change a project's display color."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_duplicate",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.duplicate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.duplicate"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\",\n  \"newName\": \"example_value\",\n  \"newCodePrefix\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Duplicate a project (copies settings, not work items)."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_projects_get_stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/projects.getStats?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "projects.getStats"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get project statistics (tasks, completion, overdue)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Time Entries",
+      "item": [
+        {
+          "name": "kameleon_time_entries_create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/timeEntries.create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "timeEntries.create"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\",\n  \"workItemId\": \"{{exampleId}}\",\n  \"taskId\": \"{{exampleId}}\",\n  \"userId\": \"{{exampleId}}\",\n  \"description\": \"example_value\",\n  \"date\": \"2025-01-15\",\n  \"startTime\": \"example_value\",\n  \"endTime\": \"example_value\",\n  \"durationMinutes\": 1,\n  \"isBillable\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create a time entry for a project (optionally linked to a work item)."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_time_entries_list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/timeEntries.list?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22workItemId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22userId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22status%22%3A%22example_value%22%2C%22dateFrom%22%3A%222025-01-15%22%2C%22dateTo%22%3A%222025-01-15%22%2C%22limit%22%3A1%2C%22offset%22%3A1%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "timeEntries.list"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\",\"workItemId\":\"{{exampleId}}\",\"userId\":\"{{exampleId}}\",\"status\":\"example_value\",\"dateFrom\":\"2025-01-15\",\"dateTo\":\"2025-01-15\",\"limit\":1,\"offset\":1}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List time entries with optional filters."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_time_entries_my_entries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/timeEntries.myEntries?input=%7B%22dateFrom%22%3A%222025-01-15%22%2C%22dateTo%22%3A%222025-01-15%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "timeEntries.myEntries"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"dateFrom\":\"2025-01-15\",\"dateTo\":\"2025-01-15\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get time entries for the current user."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_time_entries_update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/timeEntries.update",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "timeEntries.update"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timeEntryId\": \"{{exampleId}}\",\n  \"description\": \"example_value\",\n  \"date\": \"2025-01-15\",\n  \"startTime\": \"example_value\",\n  \"endTime\": \"example_value\",\n  \"durationMinutes\": 1,\n  \"isBillable\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a time entry."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_time_entries_delete",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/timeEntries.delete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "timeEntries.delete"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timeEntryId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete a time entry."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_time_entries_submit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/timeEntries.submit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "timeEntries.submit"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timeEntryId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Submit a draft time entry for approval."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_time_entries_project_summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/timeEntries.projectSummary?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22workItemId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22userId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "timeEntries.projectSummary"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\",\"workItemId\":\"{{exampleId}}\",\"userId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get time tracking summary for a project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_time_entries_get",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/timeEntries.getById?input=%7B%22timeEntryId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "timeEntries.getById"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"timeEntryId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get a time entry by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_time_entries_approve",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/timeEntries.approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "timeEntries.approve"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timeEntryId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Approve a submitted time entry."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_time_entries_reject",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/timeEntries.reject",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "timeEntries.reject"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timeEntryId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Reject a submitted time entry."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_time_entries_resubmit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/timeEntries.resubmit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "timeEntries.resubmit"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timeEntryId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Resubmit a rejected time entry."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_time_entries_pending_approval",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/timeEntries.pendingApproval?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "timeEntries.pendingApproval"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List time entries pending approval."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_time_entries_export",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/timeEntries.export?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22userId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22status%22%3A%5B%5D%2C%22dateFrom%22%3A%222025-01-15%22%2C%22dateTo%22%3A%222025-01-15%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "timeEntries.export"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\",\"userId\":\"{{exampleId}}\",\"status\":[],\"dateFrom\":\"2025-01-15\",\"dateTo\":\"2025-01-15\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Export time entries for a project."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Financials",
+      "item": [
+        {
+          "name": "kameleon_financials_create_entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.createEntry",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.createEntry"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{exampleId}}\",\n  \"categoryId\": \"{{exampleId}}\",\n  \"direction\": \"example_value\",\n  \"bucket\": \"example_value\",\n  \"amount\": 1,\n  \"currency\": \"example_value\",\n  \"date\": \"2025-01-15\",\n  \"description\": \"example_value\",\n  \"externalRef\": \"example_value\",\n  \"vendorName\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create a financial entry for a project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_financials_list_entries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.listEntries?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22categoryId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22direction%22%3A%22example_value%22%2C%22bucket%22%3A%22example_value%22%2C%22status%22%3A%22example_value%22%2C%22dateFrom%22%3A%222025-01-15%22%2C%22dateTo%22%3A%222025-01-15%22%2C%22limit%22%3A1%2C%22offset%22%3A1%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.listEntries"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\",\"categoryId\":\"{{exampleId}}\",\"direction\":\"example_value\",\"bucket\":\"example_value\",\"status\":\"example_value\",\"dateFrom\":\"2025-01-15\",\"dateTo\":\"2025-01-15\",\"limit\":1,\"offset\":1}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List financial entries with filters."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_financials_get_entry",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.getEntry?input=%7B%22entryId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.getEntry"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"entryId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get a financial entry by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_financials_update_entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.updateEntry",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.updateEntry"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entryId\": \"{{exampleId}}\",\n  \"categoryId\": \"{{exampleId}}\",\n  \"amount\": 1,\n  \"date\": \"2025-01-15\",\n  \"description\": \"example_value\",\n  \"externalRef\": \"example_value\",\n  \"vendorName\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a financial entry."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_financials_approve_entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.approveEntry",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.approveEntry"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entryId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Approve a financial entry."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_financials_mark_paid",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.markPaid",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.markPaid"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entryId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Mark a financial entry as paid."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_financials_delete_entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.deleteEntry",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.deleteEntry"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entryId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete a financial entry."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_financials_create_category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.createCategory",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.createCategory"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test value\",\n  \"code\": \"example_value\",\n  \"direction\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create a financial category."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_financials_list_categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.listCategories?input=%7B%22activeOnly%22%3Atrue%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.listCategories"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"activeOnly\":true}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List financial categories."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_financials_update_category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.updateCategory",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.updateCategory"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": \"{{exampleId}}\",\n  \"name\": \"Test value\",\n  \"code\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a financial category."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_financials_deactivate_category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.deactivateCategory",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.deactivateCategory"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Deactivate a financial category."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_financials_project_summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.projectSummary?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.projectSummary"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get aggregated financial summary for a project."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_financials_by_category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.byCategory?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22bucket%22%3A%22example_value%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.byCategory"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\",\"bucket\":\"example_value\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get financials grouped by category."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_financials_by_month",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/financials.byMonth?input=%7B%22projectId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22year%22%3A1%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "financials.byMonth"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"projectId\":\"{{exampleId}}\",\"year\":1}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get financials grouped by month."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Contacts",
+      "item": [
+        {
+          "name": "kameleon_contacts_create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.create"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test value\",\n  \"displayName\": \"example_value\",\n  \"type\": \"example_value\",\n  \"parentId\": \"{{exampleId}}\",\n  \"email\": \"user@kameleonlabs.ai\",\n  \"phone\": \"example_value\",\n  \"mobile\": \"example_value\",\n  \"website\": \"example_value\",\n  \"street\": \"example_value\",\n  \"city\": \"example_value\",\n  \"state\": \"example_value\",\n  \"zip\": \"example_value\",\n  \"country\": \"example_value\",\n  \"taxId\": \"example_value\",\n  \"jobTitle\": \"example_value\",\n  \"department\": \"example_value\",\n  \"internalNote\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create a new contact."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.update",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.update"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactId\": \"{{exampleId}}\",\n  \"name\": \"Test value\",\n  \"displayName\": \"example_value\",\n  \"type\": \"example_value\",\n  \"parentId\": \"{{exampleId}}\",\n  \"email\": \"user@kameleonlabs.ai\",\n  \"phone\": \"example_value\",\n  \"mobile\": \"example_value\",\n  \"website\": \"example_value\",\n  \"street\": \"example_value\",\n  \"city\": \"example_value\",\n  \"state\": \"example_value\",\n  \"zip\": \"example_value\",\n  \"country\": \"example_value\",\n  \"taxId\": \"example_value\",\n  \"jobTitle\": \"example_value\",\n  \"department\": \"example_value\",\n  \"internalNote\": \"example_value\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a contact."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_archive",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.archive",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.archive"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Archive a contact."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_restore",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.restore",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.restore"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Restore an archived contact."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_delete",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.delete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.delete"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Permanently delete a contact."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_get",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.getById?input=%7B%22contactId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.getById"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"contactId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get a contact by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.list?input=%7B%22type%22%3A%22example_value%22%2C%22isActive%22%3Atrue%2C%22tagIds%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22parentId%22%3A%22%7B%7BexampleId%7D%7D%22%2C%22search%22%3A%22example_value%22%2C%22limit%22%3A1%2C%22offset%22%3A1%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.list"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"type\":\"example_value\",\"isActive\":true,\"tagIds\":\"{{exampleId}}\",\"parentId\":\"{{exampleId}}\",\"search\":\"example_value\",\"limit\":1,\"offset\":1}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List contacts with filters."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_tags_list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.tags.list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.tags.list"
+              ]
+            },
+            "description": "List all contact tags."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_tags_create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.tags.create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.tags.create"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test value\",\n  \"color\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create a contact tag."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_tags_update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.tags.update",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.tags.update"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tagId\": \"{{exampleId}}\",\n  \"name\": \"Test value\",\n  \"color\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a contact tag."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_tags_delete",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.tags.delete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.tags.delete"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tagId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete a contact tag."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_tags_assign",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.tags.assign",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.tags.assign"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactId\": \"{{exampleId}}\",\n  \"tagId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Assign a tag to a contact."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_tags_remove",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.tags.remove",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.tags.remove"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactId\": \"{{exampleId}}\",\n  \"tagId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Remove a tag from a contact."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_addresses_add",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.addresses.add",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.addresses.add"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactId\": \"{{exampleId}}\",\n  \"type\": \"example_value\",\n  \"label\": \"example_value\",\n  \"street\": \"example_value\",\n  \"street2\": \"example_value\",\n  \"city\": \"example_value\",\n  \"state\": \"example_value\",\n  \"zip\": \"example_value\",\n  \"country\": \"example_value\",\n  \"isDefault\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Add an address to a contact."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_addresses_update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.addresses.update",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.addresses.update"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressId\": \"{{exampleId}}\",\n  \"contactId\": \"{{exampleId}}\",\n  \"type\": \"example_value\",\n  \"label\": \"example_value\",\n  \"street\": \"example_value\",\n  \"street2\": \"example_value\",\n  \"city\": \"example_value\",\n  \"state\": \"example_value\",\n  \"zip\": \"example_value\",\n  \"country\": \"example_value\",\n  \"isDefault\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a contact address."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_addresses_delete",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.addresses.delete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.addresses.delete"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressId\": \"{{exampleId}}\",\n  \"contactId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete a contact address."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_notes_list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.notes.list?input=%7B%22contactId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.notes.list"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"contactId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List notes for a contact."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_notes_add",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.notes.add",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.notes.add"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactId\": \"{{exampleId}}\",\n  \"content\": \"example_value\",\n  \"isPinned\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Add a note to a contact."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_notes_update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.notes.update",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.notes.update"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"noteId\": \"{{exampleId}}\",\n  \"contactId\": \"{{exampleId}}\",\n  \"content\": \"example_value\",\n  \"isPinned\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a contact note."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_contacts_notes_delete",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/contacts.notes.delete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "contacts.notes.delete"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"noteId\": \"{{exampleId}}\",\n  \"contactId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete a contact note."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Membership",
+      "item": [
+        {
+          "name": "kameleon_membership_invite",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/membership.invite",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "membership.invite"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@kameleonlabs.ai\",\n  \"name\": \"Test value\",\n  \"roleId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Invite a user to the tenant."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_membership_list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/membership.list?input=%7B%22status%22%3A%22example_value%22%2C%22limit%22%3A1%2C%22offset%22%3A1%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "membership.list"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"status\":\"example_value\",\"limit\":1,\"offset\":1}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List memberships with optional status filter."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_membership_update_status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/membership.updateStatus",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "membership.updateStatus"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"membershipId\": \"{{exampleId}}\",\n  \"status\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a membership's status (activate, suspend, reactivate)."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_membership_assign_role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/membership.assignRole",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "membership.assignRole"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"membershipId\": \"{{exampleId}}\",\n  \"roleId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Assign a role to a membership."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_membership_set_password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/membership.setMemberPassword",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "membership.setMemberPassword"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{exampleId}}\",\n  \"newPassword\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Admin password reset for a tenant member."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "RBAC",
+      "item": [
+        {
+          "name": "kameleon_rbac_create_role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/rbac.createRole",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "rbac.createRole"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test value\",\n  \"description\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create a new custom role in the tenant."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_rbac_update_role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/rbac.updateRole",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "rbac.updateRole"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleId\": \"{{exampleId}}\",\n  \"name\": \"Test value\",\n  \"description\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a role's name/description."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_rbac_delete_role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/rbac.deleteRole",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "rbac.deleteRole"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete a role. Cannot delete system roles."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_rbac_list_roles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/rbac.listRoles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "rbac.listRoles"
+              ]
+            },
+            "description": "List all roles in the tenant with assigned permissions."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_rbac_get_role",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/rbac.getRole?input=%7B%22roleId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "rbac.getRole"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"roleId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get a specific role by ID with assigned permissions."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_rbac_assign_permissions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/rbac.assignPermissions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "rbac.assignPermissions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleId\": \"{{exampleId}}\",\n  \"permissions\": [],\n  \"permissionId\": \"{{exampleId}}\",\n  \"scope\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Assign permissions to a role (replaces existing)."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_rbac_list_permissions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/rbac.listPermissions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "rbac.listPermissions"
+              ]
+            },
+            "description": "List all permissions in the platform catalog."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_rbac_get_my_permissions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/rbac.getMyPermissions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "rbac.getMyPermissions"
+              ]
+            },
+            "description": "Return the current user's effective permissions and SuperAdmin status."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tenant",
+      "item": [
+        {
+          "name": "kameleon_tenant_get_current",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/tenant.getCurrent",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "tenant.getCurrent"
+              ]
+            },
+            "description": "Return current tenant info including subscription and enabled modules."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_tenant_list_my_tenants",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/tenant.listMyTenants",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "tenant.listMyTenants"
+              ]
+            },
+            "description": "List all tenants the current user belongs to."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_tenant_update_info",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/tenant.updateTenantInfo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "tenant.updateTenantInfo"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test value\",\n  \"slug\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update the tenant's name and/or slug."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_tenant_check_availability",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/tenant.checkTenantAvailability?input=%7B%22name%22%3A%22Test%20value%22%2C%22slug%22%3A%22example_value%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "tenant.checkTenantAvailability"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"name\":\"Test value\",\"slug\":\"example_value\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Check if a tenant name or slug is available."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Audit",
+      "item": [
+        {
+          "name": "kameleon_audit_list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/audit.list?input=%7B%22limit%22%3A1%2C%22offset%22%3A1%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "audit.list"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"limit\":1,\"offset\":1}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List audit log events."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_audit_get",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/audit.getById?input=%7B%22auditId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "audit.getById"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"auditId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "Get an audit log event by ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "kameleon_profile_get",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/profile.get",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "profile.get"
+              ]
+            },
+            "description": "Get the current user's profile."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_profile_update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/profile.update",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "profile.update"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test value\",\n  \"avatarUrl\": \"example_value\",\n  \"timezone\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update the current user's profile."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_profile_change_password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/profile.changePassword",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "profile.changePassword"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"example_value\",\n  \"newPassword\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Change the current user's password."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Groups",
+      "item": [
+        {
+          "name": "kameleon_user_groups_list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/userGroups.list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "userGroups.list"
+              ]
+            },
+            "description": "List user groups."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_user_groups_create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/userGroups.create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "userGroups.create"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test value\",\n  \"description\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create a user group."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_user_groups_update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/userGroups.update",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "userGroups.update"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"groupId\": \"{{exampleId}}\",\n  \"name\": \"Test value\",\n  \"description\": \"example_value\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Update a user group."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_user_groups_delete",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/userGroups.delete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "userGroups.delete"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"groupId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Delete a user group."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_user_groups_add_member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/userGroups.addMember",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "userGroups.addMember"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"groupId\": \"{{exampleId}}\",\n  \"userId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Add a member to a user group."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_user_groups_remove_member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/userGroups.removeMember",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "userGroups.removeMember"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"groupId\": \"{{exampleId}}\",\n  \"userId\": \"{{exampleId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Remove a member from a user group."
+          },
+          "response": []
+        },
+        {
+          "name": "kameleon_user_groups_list_members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/userGroups.listMembers?input=%7B%22groupId%22%3A%22%7B%7BexampleId%7D%7D%22%7D",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "trpc",
+                "userGroups.listMembers"
+              ],
+              "query": [
+                {
+                  "key": "input",
+                  "value": "{\"groupId\":\"{{exampleId}}\"}",
+                  "description": "Required params as JSON"
+                }
+              ]
+            },
+            "description": "List members of a user group."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
